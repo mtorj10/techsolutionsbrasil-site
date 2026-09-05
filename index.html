@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tech Solutions Brasil — Software para Negócios Reais</title>
+  <meta name="description" content="Software de gestão para financeiro, saúde, varejo e estoque. Produtos prontos, implantação rápida, suporte direto." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0F1F3D;
+      --blue: #00AAFF;
+      --blue-dark: #0088CC;
+      --bg-light: #F7F9FC;
+      --white: #FFFFFF;
+      --ink: #1C1C1C;
+      --muted: #6B7280;
+      --border: #E2E8F0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--ink);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(15, 31, 61, 0.97);
+      backdrop-filter: blur(8px);
+      padding: 0 5%;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo img {
+      height: 36px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cta {
+      background: var(--blue);
+      color: var(--white) !important;
+      padding: 0.5rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 600 !important;
+    }
+
+    .nav-cta:hover { background: var(--blue-dark); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      background: var(--navy);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 120px 5% 80px;
+      gap: 4rem;
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards 0.1s;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    .hero-text h1 {
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-text h1 em {
+      font-style: normal;
+      color: var(--blue);
+    }
+
+    .hero-text p {
+      font-size: 1.0625rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+      max-width: 46ch;
+      margin-bottom: 2rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: var(--white);
+      padding: 0.875rem 1.75rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .btn-primary:hover { background: var(--blue-dark); }
+
+    .btn-ghost {
+      color: rgba(255,255,255,0.75);
+      padding: 0.875rem 1.75rem;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.9375rem;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,0.5);
+      color: var(--white);
+    }
+
+    .hero-products {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .hero-product-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .hero-product-card:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(26,115,232,0.4);
+    }
+
+    .product-tag {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-product-card h3 {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.375rem;
+    }
+
+    .hero-product-card p {
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+    }
+
+    /* SECTION BASE */
+    section { padding: 96px 5%; }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--blue);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.625rem, 3vw, 2.25rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 52ch;
+    }
+
+    /* PRODUCTS */
+    .products { background: var(--bg-light); }
+
+    .products-header { margin-bottom: 3rem; }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: border-color 0.15s;
+    }
+
+    .product-card:hover { border-color: var(--blue); }
+
+    .product-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .icon-blue { background: #EBF3FD; }
+    .icon-green { background: #EDFAF4; }
+    .icon-orange { background: #FEF3EB; }
+    .icon-purple { background: #F0EBFE; }
+
+    .product-card h3 {
+      font-size: 1.125rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+    }
+
+    .product-card .product-tagline {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-top: -0.5rem;
+    }
+
+    .product-card p {
+      font-size: 0.9375rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .product-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .product-features li {
+      font-size: 0.875rem;
+      color: var(--ink);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .product-features li::before {
+      content: '✓';
+      color: var(--blue);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 0.05em;
+    }
+
+    .product-link {
+      margin-top: auto;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--blue);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+
+    .product-link:hover { color: var(--blue-dark); }
+
+    /* WHY */
+    .why { background: var(--white); }
+
+    .why-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .why-points {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .why-point {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+    }
+
+    .why-point-num {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--blue);
+      background: #EBF3FD;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.1em;
+    }
+
+    .why-point h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.375rem;
+    }
+
+    .why-point p {
+      font-size: 0.9375rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .why-stat-block {
+      background: var(--navy);
+      border-radius: 16px;
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .stat-item h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .stat-item p {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.55);
+      margin-top: 0.375rem;
+    }
+
+    .stat-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* ABOUT */
+    .about { background: var(--bg-light); }
+
+    .about-inner {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 4rem;
+      align-items: center;
+      max-width: 860px;
+    }
+
+    .about-photo {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: var(--border);
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 4px solid var(--white);
+    }
+
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .about-text h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
+    }
+
+    .about-role {
+      font-size: 0.875rem;
+      color: var(--blue);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .about-text p {
+      font-size: 0.9375rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* CTA */
+    .cta-section {
+      background: var(--navy);
+      text-align: center;
+      padding: 96px 5%;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+
+    .cta-section p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 2rem;
+      max-width: 44ch;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #070F1F;
+      padding: 2.5rem 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .footer-logo span { color: var(--blue); }
+
+    footer p {
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      nav { padding: 0 4%; }
+      .nav-links { display: none; }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 100px 4% 64px;
+        gap: 3rem;
+      }
+
+      .hero-products { grid-template-columns: 1fr; gap: 0.75rem; }
+
+      section { padding: 72px 4%; }
+
+      .products-grid { grid-template-columns: 1fr; }
+
+      .why-inner { grid-template-columns: 1fr; gap: 3rem; }
+
+      .about-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .about-photo { width: 120px; height: 120px; }
+
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero { animation: none; opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo"><img src="logo-escuro.png" alt="Tech Solutions Brasil" /></div>
+    <ul class="nav-links">
+      <li><a href="#produtos">Produtos</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="https://wa.me/5521988101807" class="nav-cta">Falar com especialista</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Software que <em>resolve</em><br>negócios reais</h1>
+      <p>Desenvolvemos e operamos sistemas de gestão para empresas que precisam de resultado agora — não de promessa de projeto.</p>
+      <div class="hero-actions">
+        <a href="#produtos" class="btn-primary">Ver produtos</a>
+        <a href="https://wa.me/5521988101807" class="btn-ghost">Falar com a gente</a>
+      </div>
+    </div>
+    <div class="hero-products">
+      <div class="hero-product-card">
+        <div class="product-tag">Financeiro</div>
+        <h3>ControlFinc</h3>
+        <p>Visão financeira unificada para quem opera mais de uma empresa</p>
+      </div>
+      <div class="hero-product-card">
+        <div class="product-tag">Saúde</div>
+        <h3>PrimeFit</h3>
+        <p>Gestão para clínicas e profissionais de saúde</p>
+      </div>
+      <div class="hero-product-card">
+        <div class="product-tag">Food Service</div>
+        <h3>MesaOne</h3>
+        <p>PDV inteligente para bares e restaurantes</p>
+      </div>
+      <div class="hero-product-card">
+        <div class="product-tag">Varejo</div>
+        <h3>EstoqIA</h3>
+        <p>Controle de estoque com inteligência artificial</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUTOS -->
+  <section class="products" id="produtos">
+    <div class="products-header">
+      <div class="section-label">Nossos produtos</div>
+      <h2 class="section-title">Quatro sistemas.<br>Um parceiro.</h2>
+      <p class="section-sub">Cada produto foi construído para resolver um problema específico — e já está em operação.</p>
+    </div>
+    <div class="products-grid">
+
+      <div class="product-card">
+        <div class="product-icon icon-blue">💼</div>
+        <div>
+          <h3>ControlFinc</h3>
+          <div class="product-tagline">Visão financeira unificada para quem opera mais de uma empresa</div>
+        </div>
+        <p>Para quem controla as finanças no Excel ou navega entre ERPs diferentes de cada franquia — o ControlFinc centraliza tudo em um lugar. Dashboard em tempo real, DRE, fluxo de caixa com projeção e lançamento de notas por IA.</p>
+        <ul class="product-features">
+          <li>Dashboard consolidado de todas as empresas</li>
+          <li>NotaFlow IA — fotografou a nota, está lançado</li>
+          <li>Alertas de vencimento no email todo dia às 7h</li>
+          <li>App mobile instalável sem App Store</li>
+        </ul>
+        <a href="https://controlfinc.techsolutionsbrasil.com.br" class="product-link">Ver ControlFinc →</a>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon icon-green">🏥</div>
+        <div>
+          <h3>PrimeFit</h3>
+          <div class="product-tagline">Gestão para Saúde</div>
+        </div>
+        <p>Sistema de gestão para clínicas, consultórios e profissionais de saúde. Automatiza processos, integra agendamento e facilita o relacionamento com pacientes.</p>
+        <ul class="product-features">
+          <li>Integração com plataformas de nutrição e saúde</li>
+          <li>Automação via WhatsApp para pacientes</li>
+          <li>Gestão de protocolos e acompanhamento</li>
+          <li>Relatórios de evolução e resultados</li>
+        </ul>
+        <a href="https://wa.me/5521988101807" class="product-link">Solicitar demonstração →</a>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon icon-orange">🍽️</div>
+        <div>
+          <h3>MesaOne</h3>
+          <div class="product-tagline">PDV para Food Service</div>
+        </div>
+        <p>PDV completo para restaurantes, cafeterias, lanchonetes e bares. Desenvolvido para a realidade do food service brasileiro — rápido no atendimento, preciso no caixa.</p>
+        <ul class="product-features">
+          <li>Gestão de mesas, comandas e pedidos em tempo real</li>
+          <li>Controle de caixa e fechamento de turno</li>
+          <li>Relatórios de vendas por produto e período</li>
+          <li>Funciona em tablet, celular e computador</li>
+        </ul>
+        <a href="https://wa.me/5521988101807" class="product-link">Solicitar demonstração →</a>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon icon-purple">📦</div>
+        <div>
+          <h3>EstoqIA</h3>
+          <div class="product-tagline">Controle de Estoque</div>
+        </div>
+        <p>Inventário simples, controle completo. Funciona integrado ao MesaOne para food service — ou de forma independente para qualquer segmento que precise controlar estoque.</p>
+        <ul class="product-features">
+          <li>Entrada e saída com leitura de código de barras</li>
+          <li>Alertas de estoque mínimo automáticos</li>
+          <li>Relatórios de giro e posição de estoque</li>
+          <li>Integrado ao MesaOne ou standalone para qualquer negócio</li>
+        </ul>
+        <a href="https://wa.me/5521988101807" class="product-link">Solicitar demonstração →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- POR QUÊ NÓS -->
+  <section class="why" id="diferenciais">
+    <div class="why-inner">
+      <div>
+        <div class="section-label">Por que a Tech Solutions Brasil</div>
+        <h2 class="section-title">Construímos o que usamos.</h2>
+        <p class="section-sub" style="margin-bottom: 2.5rem;">Nossos sistemas não saíram de uma lousa — saíram da operação real de negócios.</p>
+        <div class="why-points">
+          <div class="why-point">
+            <div class="why-point-num">1</div>
+            <div>
+              <h4>Produtos prontos, não projetos</h4>
+              <p>Você não está comprando um desenvolvimento customizado que demora meses. Está ativando um sistema que já funciona — com implantação em dias.</p>
+            </div>
+          </div>
+          <div class="why-point">
+            <div class="why-point-num">2</div>
+            <div>
+              <h4>Suporte direto com quem construiu</h4>
+              <p>Sem call center. Sem ticket aberto que some. Você fala com a equipe técnica que desenvolveu o sistema e conhece cada detalhe.</p>
+            </div>
+          </div>
+          <div class="why-point">
+            <div class="why-point-num">3</div>
+            <div>
+              <h4>Testado em operação real</h4>
+              <p>Cada produto passou por uso em ambiente real antes de chegar ao mercado. O que você assina já foi validado na prática.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="why-stat-block">
+        <div class="stat-item">
+          <h2>4</h2>
+          <p>produtos em operação</p>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <h2>100%</h2>
+          <p>desenvolvido no Brasil</p>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <h2>dias</h2>
+          <p>para estar em operação — não meses</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section class="about" id="sobre">
+    <div class="about-inner">
+      <div class="about-photo">
+        <img src="foto-marcelo.jpg" alt="Marcelo — Fundador da Tech Solutions Brasil" />
+      </div>
+      <div class="about-text">
+        <h2>Marcelo</h2>
+        <div class="about-role">Fundador · Tech Solutions Brasil</div>
+        <p>Sou empreendedor antes de ser desenvolvedor. Opero franquias em três segmentos diferentes — alimentação, moda íntima feminina e colchões — e foi justamente a bagunça de gerir múltiplas empresas com sistemas que não conversam que me fez criar meu próprio software. O ControlFinc nasceu da minha planilha de Excel. O MesaOne nasceu do caixa da minha loja. Cada sistema que a Tech Solutions Brasil oferece foi construído para resolver uma dor que eu mesmo enfrentei — e continuo melhorando todo dia, porque ainda opero as empresas e vivo os mesmos problemas dos meus clientes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>Pronto para sair da planilha?</h2>
+    <p>Agende uma conversa e veja qual dos nossos sistemas resolve o seu problema mais urgente.</p>
+    <a href="https://wa.me/5521988101807" class="btn-primary">Falar com a Tech Solutions Brasil</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo"><img src="logo-escuro.png" alt="Tech Solutions Brasil" style="height:28px;width:auto;opacity:0.7;" /></div>
+    <p>© 2025 Tech Solutions Brasil. Todos os direitos reservados.</p>
+  </footer>
+
+</body>
+</html>
