@@ -2,15 +2,15 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Diagnóstico Empresa Inteligente</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#040e1c;--bg2:#071628;--bg3:#0b1f38;--border:#132d4a;--border2:#1a3f60;--cyan:#00c8e0;--cglow:rgba(0,200,224,0.15);--cdim:#007a8a;--white:#eaf4ff;--muted:#5a7a96;--green:#00d49a;--yellow:#f0a500;--red:#e04444;--r:12px;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--white);font-family:Inter,Arial,sans-serif;font-size:15px;line-height:1.6;}
+*{box-sizing:border-box;margin:0;padding:0;}img{max-width:100%;}
+body{background:var(--bg);color:var(--white);font-family:Inter,Arial,sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden;}
 .screen{display:none;min-height:100vh;}
-#s-intro{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(0,120,180,0.18),transparent 70%);}
+#s-intro{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 20px 20px;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(0,120,180,0.18),transparent 70%);}
 .badge{display:inline-flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:40px;padding:8px 18px;font-size:12px;color:var(--cyan);font-weight:600;margin-bottom:12px;}
 .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);}
 h1{font-size:clamp(24px,5vw,48px);font-weight:800;line-height:1.15;max-width:680px;margin-bottom:10px;}
@@ -68,8 +68,8 @@ h1 em{font-style:normal;color:var(--cyan);}
 .nivel-badge{display:inline-block;padding:5px 18px;border-radius:30px;font-size:14px;font-weight:700;margin-bottom:14px;}
 .res-desc{font-size:14px;color:var(--muted);max-width:500px;margin:0 auto;line-height:1.6;}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:14px;}
-.card-label{font-size:11px;font-weight:600;color:var(--cyan);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
-.card-bar{width:18px;height:2px;background:var(--cyan);flex-shrink:0;}
+.card-label{font-size:11px;font-weight:600;color:var(--cyan);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}.card-label::before{content:'';width:18px;height:2px;background:var(--cyan);display:inline-block;flex-shrink:0;}
+
 .card h3{font-size:18px;font-weight:700;margin-bottom:14px;}
 .eblk{margin-bottom:12px;}
 .elabel{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px;}
@@ -446,26 +446,25 @@ function buildResult(){
     +"</svg><div class='ring-center'><div class='ring-score' style='color:"+nivel.c+"'>"+score+"</div><div class='ring-total'>/100</div></div></div>"
     +"<div class='nivel-badge' style='color:"+nivel.c+";background:"+nivel.bg+";border:1px solid "+nivel.c+"40'>"+nivel.n+"</div>"
     +"<p class='res-desc'>"+nivel.d+"</p></div>"
-    +"<div class='card'><div class='card-label'><span class='card-bar'></span>Relatório Executivo</div><h3>O que o resultado significa</h3>"
+    +"<div class='card'><div class='card-label'>Relatório Executivo</div><h3>O que o resultado significa</h3>"
     +"<div class='eblk'><div class='elabel'>Estágio Atual</div><div class='etxt'>"+nivel.e+"</div></div>"
-    +"<div class='eblk'><div class='elabel'>Desafio Identificado</div><div class='etxt'>Seu principal ponto de atenção está em <strong>"+f1.n+"</strong> ("+f1.p+"%). Evoluir aqui pode gerar impacto direto nos resultados.</div></div>"
+    +"<div class='eblk'><div class='elabel'>Desafio Identificado</div><div class='etxt'>"+(emp.length>1?"Sua empresa tem "+emp.length+" pilares com pontuação mais baixa ("+ps+"%), todos precisando de atenção prioritária: <strong>"+emp.map(function(x){return x.n;}).join(', ')+"</strong>. Evoluir nesses pontos pode gerar impacto direto nos resultados.":"Seu principal ponto de atenção está em <strong>"+f1.n+"</strong> ("+f1.p+"%). Evoluir aqui pode gerar impacto direto nos resultados.")+"</div></div>"
     +"<div class='eblk'><div class='elabel'>Leitura de Previsibilidade</div><div class='etxt'>"+nivel.pv+"</div></div></div>"
-    +"<div class='card'><div class='card-label'><span class='card-bar'></span>Prioridade Estratégica</div><h3>Onde agir primeiro</h3>"
+    +"<div class='card'><div class='card-label'>Prioridade Estratégica</div><h3>Onde agir primeiro</h3>"
     +prioH
     +"<div class='sublabel'>Segundo ponto de atenção</div>"
     +"<div style='font-size:13px;color:#8aaec8;margin-bottom:12px;'>"+f2.n+" - "+f2.p+"%</div>"
     +"<div class='sublabel'>Impacto provável</div>"
     +"<div style='font-size:13px;color:#8aaec8;line-height:1.6;'>Evoluir em "+f1.n+" tem potencial direto de reduzir custos operacionais, aumentar a previsibilidade e liberar tempo para decisões estratégicas.</div></div>"
-    +"<div class='card'><div class='card-label'><span class='card-bar'></span>Pontos de Destaque</div><h3>O que já sustenta sua operação</h3><div style='margin-top:8px;'>"+fp+"</div></div>"
-    +"<div class='card'><div class='card-label'><span class='card-bar'></span>Principais Oportunidades</div><h3>Onde há maior potencial de evolução</h3><div style='margin-top:10px;'>"+opH+"</div></div>"
-    +"<div class='card'><div class='card-label'><span class='card-bar'></span>Próximos Passos</div><h3>O que fazer a partir deste diagnóstico</h3><div style='margin-top:8px;'>"+pasH+"</div></div>"
-    +"<div class='card'><div class='card-label'><span class='card-bar'></span>Leitura por Pilar</div><h3>Ranking de Maturidade</h3><div style='margin-top:14px;'>"+bars+"</div></div>"
-    +"<div class='cta'><h3>Próximo passo: Diagnóstico Estratégico</h3>"
+    +"<div class='card'><div class='card-label'>Pontos de Destaque</div><h3>O que já sustenta sua operação</h3><div style='margin-top:8px;'>"+fp+"</div></div>"
+    +"<div class='card'><div class='card-label'>Principais Oportunidades</div><h3>Onde há maior potencial de evolução</h3><div style='margin-top:10px;'>"+opH+"</div></div>"
+    +"<div class='card'><div class='card-label'>Próximos Passos</div><h3>O que fazer a partir deste diagnóstico</h3><div style='margin-top:8px;'>"+pasH+"</div></div>"
+    +"<div class='card'><div class='card-label'>Leitura por Pilar</div><h3>Ranking de Maturidade</h3><div style='margin-top:14px;'>"+bars+"</div></div>"
+    +"<div class='cta'><button class='btn-pdf' id='btn-pdf' style='margin-bottom:16px;width:100%;justify-content:center;'>📄 Baixar meu diagnóstico em PDF</button><h3>Próximo passo: Diagnóstico Estratégico</h3>"
     +"<p>Transforme esse diagnóstico em um plano de ação concreto com especialistas que já resolveram esses problemas na prática.</p>"
     +"<a href='"+waLink+"' target='_blank' class='btn-wa'>"
     +"<svg width='18' height='18' viewBox='0 0 24 24' fill='white'><path d='M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z'/></svg>"
     +"Agendar Diagnóstico Estratégico</a><br>"
-    +"<button class='btn-pdf' id='btn-pdf'>📄 Baixar meu diagnóstico em PDF</button><br>"
     +"<button class='btn-outline' id='btn-refazer'>Refazer o diagnóstico</button></div>";
   document.getElementById("res-content").innerHTML=H;
   show("s-result");
