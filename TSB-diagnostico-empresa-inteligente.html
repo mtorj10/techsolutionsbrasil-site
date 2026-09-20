@@ -101,7 +101,7 @@ h1 em{font-style:normal;color:var(--cyan);}
 .cta p{font-size:13px;color:var(--muted);margin-bottom:20px;max-width:400px;margin-left:auto;margin-right:auto;}
 .btn-wa{display:inline-flex;align-items:center;gap:8px;background:#25d366;color:#fff;font-weight:800;font-size:14px;padding:14px 28px;border-radius:10px;border:none;cursor:pointer;text-decoration:none;}
 .btn-pdf{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1.5px solid var(--cyan);color:var(--cyan);font-weight:700;font-size:13px;padding:11px 22px;border-radius:10px;cursor:pointer;margin-top:10px;}
-.logo-tsb{height:80px;object-fit:contain;}
+.logo-tsb{height:140px;object-fit:contain;}
 .logo-hdr{height:38px;object-fit:contain;}
 @media(max-width:560px){.row2{grid-template-columns:1fr;}.prow-name{width:110px;font-size:10px;}}
 </style>
@@ -532,25 +532,36 @@ function gerarPDF(score,nivel,f1,f2,fortes,top3,porte,setor,cd){
 function enviarEmail(){
   var d=window._dd;
   if(!d)return;
-  var fortesStr=d.fortes.length>0?d.fortes.map(function(f){return f.n+" ("+f.p+"%)";}).join(", "):"Nenhum pilar acima de 65%";
+  var fortesStr=d.fortes.length>0?d.fortes.map(function(f){return f.n+" ("+f.p+"%)";}).join(", "):"Nenhum pilar acima de 65% - empresa em fase de construcao da base digital";
   var pilaresDesc=d.cd.slice().sort(function(a,b){return b.p-a.p;}).map(function(p){
     var mat=p.p>=75?"Excelencia":p.p>=50?"Em maturacao":p.p>=25?"A desenvolver":"Critico";
-    return p.n+": "+p.p+"% - "+mat;
+    return p.n+": "+p.p+"% ("+mat+")";
   }).join(" | ");
-  var oportDesc=d.top3.map(function(f){
+  var oportDesc=d.top3.map(function(f,i){
     var op=OPORT[f.idx];
-    return f.n+" ("+f.p+"%) >> "+(op?op.t+" - Solucao: "+op.s:"");
-  }).join(" || ");
-  var passosDesc="1. Proteja o que ja funciona | 2. Corrija primeiro: "+d.f1.n+" | 3. KPI semanal em "+d.f1.n+" | 4. Reavalie em 30 dias";
+    return (i+1)+". "+f.n+" ("+f.p+"%) - "+(op?op.t+" >> "+op.s:"");
+  }).join(" | ");
+  var estagio=d.nivel.e;
+  var previsibilidade=d.nivel.pv;
   if(typeof emailjs!=="undefined"){
     emailjs.send(EJS_SVC,EJS_TPL,{
-      nome:lead.nome,empresa:lead.empresa,whatsapp:lead.wpp,email_lead:lead.email,
-      porte:d.porte,setor:d.setor,momento:d.momento,
-      score:d.score,nivel:d.nivel.n,
+      nome:lead.nome,
+      empresa:lead.empresa,
+      whatsapp:lead.wpp,
+      email_lead:lead.email,
+      porte:d.porte,
+      setor:d.setor,
+      momento:d.momento,
+      score:d.score,
+      nivel:d.nivel.n,
+      estagio:estagio,
+      previsibilidade:previsibilidade,
       gargalo1:d.f1.n+" ("+d.f1.p+"%)",
       gargalo2:d.f2.n+" ("+d.f2.p+"%)",
       pontos_fortes:fortesStr,
-      proximos_passos:passosDesc+" || OPORTUNIDADES: "+oportDesc+" || PILARES COMPLETOS: "+pilaresDesc
+      oportunidades:oportDesc,
+      pilares_completos:pilaresDesc,
+      proximos_passos:"1. Proteja o que ja funciona | 2. Corrija: "+d.f1.n+" | 3. KPI semanal em "+d.f1.n+" | 4. Reavalie em 30 dias"
     }).then(function(){console.log("Email ok");}).catch(function(e){console.log("Erro:",e);});
   }
 }
