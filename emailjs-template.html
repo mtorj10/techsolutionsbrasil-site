@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body{margin:0;padding:0;background:#f0f4f8;font-family:Arial,sans-serif;}
+  .wrap{max-width:640px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);}
+  .header{background:#040e1c;padding:28px 32px;text-align:center;}
+  .header img{height:48px;object-fit:contain;}
+  .header h1{color:#eaf4ff;font-size:18px;margin:12px 0 4px;}
+  .header p{color:#5a7a96;font-size:13px;margin:0;}
+  .score-box{background:#071628;padding:24px 32px;text-align:center;border-bottom:1px solid #132d4a;}
+  .score-num{font-size:56px;font-weight:800;color:#00c8e0;line-height:1;}
+  .score-label{font-size:13px;color:#5a7a96;margin-top:4px;}
+  .nivel-badge{display:inline-block;padding:5px 20px;border-radius:30px;font-size:14px;font-weight:700;margin-top:12px;border:1px solid #00c8e040;background:rgba(0,200,224,0.1);color:#00c8e0;}
+  .lead-box{background:#f8fbff;border-bottom:1px solid #e0eaf5;padding:20px 32px;}
+  .lead-row{display:flex;gap:8px;margin-bottom:6px;font-size:13px;}
+  .lead-label{color:#5a7a96;width:90px;flex-shrink:0;font-weight:600;}
+  .lead-val{color:#1a2e42;}
+  .section{padding:24px 32px;border-bottom:1px solid #e8f0f7;}
+  .section-title{font-size:11px;font-weight:700;color:#007a8a;text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .section-title::before{content:'';display:inline-block;width:16px;height:2px;background:#007a8a;}
+  .section h3{font-size:16px;font-weight:700;color:#1a2e42;margin:0 0 14px;}
+  .blk{margin-bottom:14px;}
+  .blk-label{font-size:11px;font-weight:700;color:#5a7a96;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px;}
+  .blk-val{font-size:13px;color:#2a4a62;line-height:1.6;}
+  .ocard{background:#f0f9ff;border:1px solid #b3d9f0;border-radius:8px;padding:12px 14px;margin-bottom:8px;}
+  .ocard-pilar{font-size:11px;font-weight:700;color:#007a8a;margin-bottom:3px;}
+  .ocard-titulo{font-size:13px;font-weight:700;color:#1a2e42;margin-bottom:3px;}
+  .ocard-solucao{font-size:12px;color:#5a7a96;}
+  .pilar-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0f4f8;font-size:13px;}
+  .pilar-name{color:#2a4a62;}
+  .pilar-right{display:flex;align-items:center;gap:8px;}
+  .pilar-pct{font-weight:700;color:#1a2e42;}
+  .badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;}
+  .bc{background:#fde8e8;color:#c0392b;}
+  .bd{background:#fef3cd;color:#856404;}
+  .bm{background:#d1f0f5;color:#007a8a;}
+  .be{background:#d4f5e9;color:#1a7a4a;}
+  .passo{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start;}
+  .pnum{width:26px;height:26px;border-radius:50%;background:#007a8a;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .pnum-txt{font-size:13px;color:#2a4a62;line-height:1.5;padding-top:4px;}
+  .footer{background:#f0f4f8;padding:20px 32px;text-align:center;}
+  .footer p{font-size:11px;color:#8aaec8;margin:4px 0;}
+  .btn-wa{display:inline-block;background:#25d366;color:#fff;font-weight:700;font-size:14px;padding:12px 28px;border-radius:8px;text-decoration:none;margin-top:8px;}
+</style>
+</head>
+<body>
+<div style="padding:20px;">
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <img src="https://www.techsolutionsbrasil.com.br/logo-escuro.png" alt="Tech Solutions Brasil">
+    <h1>Diagnóstico Empresa Inteligente™</h1>
+    <p>Novo lead recebido via diagnóstico</p>
+  </div>
+
+  <!-- SCORE -->
+  <div class="score-box">
+    <div class="score-num">{{score}}</div>
+    <div class="score-label">/100 pontos</div>
+    <div class="nivel-badge">{{nivel}}</div>
+  </div>
+
+  <!-- DADOS DO LEAD -->
+  <div class="lead-box">
+    <div class="lead-row"><span class="lead-label">Nome</span><span class="lead-val">{{nome}}</span></div>
+    <div class="lead-row"><span class="lead-label">Empresa</span><span class="lead-val">{{empresa}}</span></div>
+    <div class="lead-row"><span class="lead-label">WhatsApp</span><span class="lead-val">{{whatsapp}}</span></div>
+    <div class="lead-row"><span class="lead-label">E-mail</span><span class="lead-val">{{email_lead}}</span></div>
+    <div class="lead-row"><span class="lead-label">Porte</span><span class="lead-val">{{porte}}</span></div>
+    <div class="lead-row"><span class="lead-label">Setor</span><span class="lead-val">{{setor}}</span></div>
+    <div class="lead-row"><span class="lead-label">Momento</span><span class="lead-val">{{momento}}</span></div>
+  </div>
+
+  <!-- RELATORIO EXECUTIVO -->
+  <div class="section">
+    <div class="section-title">Relatório Executivo</div>
+    <div class="blk">
+      <div class="blk-label">Estágio Atual</div>
+      <div class="blk-val">{{estagio}}</div>
+    </div>
+    <div class="blk">
+      <div class="blk-label">Desafio Identificado</div>
+      <div class="blk-val"><strong>Gargalo 1:</strong> {{gargalo1}}<br><strong>Gargalo 2:</strong> {{gargalo2}}</div>
+    </div>
+    <div class="blk">
+      <div class="blk-label">Leitura de Previsibilidade</div>
+      <div class="blk-val">{{previsibilidade}}</div>
+    </div>
+  </div>
+
+  <!-- PONTOS DE DESTAQUE -->
+  <div class="section">
+    <div class="section-title">Pontos de Destaque</div>
+    <div class="blk-val">{{pontos_fortes}}</div>
+  </div>
+
+  <!-- OPORTUNIDADES -->
+  <div class="section">
+    <div class="section-title">Principais Oportunidades</div>
+    <div class="blk-val" style="white-space:pre-line;">{{oportunidades}}</div>
+  </div>
+
+  <!-- PILARES COMPLETOS -->
+  <div class="section">
+    <div class="section-title">Leitura por Pilar</div>
+    <div class="blk-val" style="white-space:pre-line;font-size:13px;color:#2a4a62;line-height:2;">{{pilares_completos}}</div>
+  </div>
+
+  <!-- PROXIMOS PASSOS -->
+  <div class="section">
+    <div class="section-title">Próximos Passos Recomendados</div>
+    <div class="blk-val" style="white-space:pre-line;">{{proximos_passos}}</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p><strong>Tech Solutions Brasil</strong></p>
+    <p>techsolutionsbrasil.com.br</p>
+    <p style="margin-top:8px;">Este relatório foi gerado automaticamente pelo Diagnóstico Empresa Inteligente™</p>
+  </div>
+
+</div>
+</div>
+</body>
+</html>
