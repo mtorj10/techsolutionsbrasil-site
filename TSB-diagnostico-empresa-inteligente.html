@@ -452,13 +452,21 @@ function buildResult(){
     +"<div class='eblk'><div class='elabel'>Leitura de Previsibilidade</div><div class='etxt'>"+nivel.pv+"</div></div></div>"
     +"<div class='card'><div class='card-label'>Prioridade Estratégica</div><h3>Onde agir primeiro</h3>"
     +prioH
-    +"<div class='sublabel'>Segundo ponto de atenção</div>"
-    +"<div style='font-size:13px;color:#8aaec8;margin-bottom:12px;'>"+f2.n+" - "+f2.p+"%</div>"
     +"<div class='sublabel'>Impacto provável</div>"
-    +(emp.length>1
-      ? "<div style='display:flex;flex-direction:column;gap:10px;'>"+emp.map(function(e){return "<div class='ocard'><div class='ocard-p'>"+e.ic+" "+e.n+" - "+e.p+"%</div><div class='etxt'>Evoluir em "+e.n+" tem potencial direto de reduzir custos operacionais, aumentar a previsibilidade e liberar tempo para decisões estratégicas.</div></div>";}).join("")+"</div>"
-      : "<div style='font-size:13px;color:#8aaec8;line-height:1.6;'>Evoluir em "+f1.n+" tem potencial direto de reduzir custos operacionais, aumentar a previsibilidade e liberar tempo para decisões estratégicas.</div>"
-    )+"</div>"
+    +"<div style='display:flex;flex-direction:column;gap:10px;'>"+emp.map(function(e){
+      var impacts={};
+      impacts["Gestão Financeira"]="Clareza sobre lucro real, fluxo de caixa previsível e decisões baseadas em dados financeiros, não no feeling.";
+      impacts["Processos"]="Menos retrabalho, operação que funciona sem depender do dono e equipe com mais autonomia no dia a dia.";
+      impacts["Automação"]="Tarefas repetitivas eliminadas, cobrança automática e tempo da equipe liberado para o que gera resultado.";
+      impacts["Tecnologia"]="Operação mais resiliente, acesso remoto e menos risco de perda de dados por falha de equipamento.";
+      impacts["Integração"]="Dado digitado uma vez, nenhum retrabalho entre sistemas e visão unificada da operação em tempo real.";
+      impacts["Produtividade"]="Empresa funcionando com mais autonomia, menos interrupções e líderes capazes de sustentar a operação.";
+      impacts["Inteligência Artificial"]="Velocidade e qualidade nas entregas, tarefas intelectuais aceleradas e vantagem competitiva crescente.";
+      impacts["Segurança da Informação"]="Proteção contra vazamentos, controle de quem acessa o quê e redução de risco de incidentes críticos.";
+      impacts["LGPD e Privacidade"]="Conformidade legal, redução do risco de multas e transmissão de confiança para clientes e parceiros.";
+      var txt=impacts[e.n]||"Evoluir neste pilar reduz risco operacional e aumenta a competitividade do negócio.";
+      return "<div class='ocard'><div class='ocard-p'>"+e.ic+" "+e.n+" - "+e.p+"%</div><div class='etxt'>"+txt+"</div></div>";
+    }).join("")+"</div></div>"
     +"<div class='card'><div class='card-label'>Pontos de Destaque</div><h3>O que já sustenta sua operação</h3><div style='margin-top:8px;'>"+fp+"</div></div>"
     +"<div class='card'><div class='card-label'>Principais Oportunidades</div><h3>Onde há maior potencial de evolução</h3><div style='margin-top:10px;'>"+opH+"</div></div>"
     +"<div class='card'><div class='card-label'>Próximos Passos</div><h3>O que fazer a partir deste diagnóstico</h3><div style='margin-top:8px;'>"+pasH+"</div></div>"
