@@ -10,7 +10,7 @@
 *{box-sizing:border-box;margin:0;padding:0;}img{max-width:100%;}
 body{background:var(--bg);color:var(--white);font-family:Inter,Arial,sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden;}
 .screen{display:none;min-height:100vh;}
-#s-intro{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 20px 20px;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(0,120,180,0.18),transparent 70%);}
+#s-intro{display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;padding:20px;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(0,120,180,0.18),transparent 70%);min-height:100vh;}
 .badge{display:inline-flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:40px;padding:8px 18px;font-size:12px;color:var(--cyan);font-weight:600;margin-bottom:12px;}
 .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);}
 h1{font-size:clamp(24px,5vw,48px);font-weight:800;line-height:1.15;max-width:680px;margin-bottom:10px;}
@@ -101,7 +101,7 @@ h1 em{font-style:normal;color:var(--cyan);}
 .cta p{font-size:13px;color:var(--muted);margin-bottom:20px;max-width:400px;margin-left:auto;margin-right:auto;}
 .btn-wa{display:inline-flex;align-items:center;gap:8px;background:#25d366;color:#fff;font-weight:800;font-size:14px;padding:14px 28px;border-radius:10px;border:none;cursor:pointer;text-decoration:none;}
 .btn-pdf{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1.5px solid var(--cyan);color:var(--cyan);font-weight:700;font-size:13px;padding:11px 22px;border-radius:10px;cursor:pointer;margin-top:10px;}
-.logo-tsb{height:120px;object-fit:contain;margin-bottom:10px;}
+.logo-tsb{height:80px;object-fit:contain;}
 .logo-hdr{height:38px;object-fit:contain;}
 @media(max-width:560px){.row2{grid-template-columns:1fr;}.prow-name{width:110px;font-size:10px;}}
 </style>
@@ -455,7 +455,10 @@ function buildResult(){
     +"<div class='sublabel'>Segundo ponto de atenção</div>"
     +"<div style='font-size:13px;color:#8aaec8;margin-bottom:12px;'>"+f2.n+" - "+f2.p+"%</div>"
     +"<div class='sublabel'>Impacto provável</div>"
-    +"<div style='font-size:13px;color:#8aaec8;line-height:1.6;'>Evoluir em "+f1.n+" tem potencial direto de reduzir custos operacionais, aumentar a previsibilidade e liberar tempo para decisões estratégicas.</div></div>"
+    +(emp.length>1
+      ? "<div style='display:flex;flex-direction:column;gap:10px;'>"+emp.map(function(e){return "<div class='ocard'><div class='ocard-p'>"+e.ic+" "+e.n+" - "+e.p+"%</div><div class='etxt'>Evoluir em "+e.n+" tem potencial direto de reduzir custos operacionais, aumentar a previsibilidade e liberar tempo para decisões estratégicas.</div></div>";}).join("")+"</div>"
+      : "<div style='font-size:13px;color:#8aaec8;line-height:1.6;'>Evoluir em "+f1.n+" tem potencial direto de reduzir custos operacionais, aumentar a previsibilidade e liberar tempo para decisões estratégicas.</div>"
+    )+"</div>"
     +"<div class='card'><div class='card-label'>Pontos de Destaque</div><h3>O que já sustenta sua operação</h3><div style='margin-top:8px;'>"+fp+"</div></div>"
     +"<div class='card'><div class='card-label'>Principais Oportunidades</div><h3>Onde há maior potencial de evolução</h3><div style='margin-top:10px;'>"+opH+"</div></div>"
     +"<div class='card'><div class='card-label'>Próximos Passos</div><h3>O que fazer a partir deste diagnóstico</h3><div style='margin-top:8px;'>"+pasH+"</div></div>"
@@ -529,17 +532,25 @@ function gerarPDF(score,nivel,f1,f2,fortes,top3,porte,setor,cd){
 function enviarEmail(){
   var d=window._dd;
   if(!d)return;
-  var fortesStr=d.fortes.length>0?d.fortes.map(function(f){return f.n+" "+f.p+"%;";}).join(" "):"Nenhum pilar acima de 65%";
-  var oportStr=d.top3.map(function(f){var op=OPORT[f.idx];return f.n+"("+f.p+"%) - "+(op?op.s:"");}).join(" | ");
-  var pilaresStr=d.cd.map(function(p){return p.n+": "+p.p+"%";}).join(" | ");
+  var fortesStr=d.fortes.length>0?d.fortes.map(function(f){return f.n+" ("+f.p+"%)";}).join(", "):"Nenhum pilar acima de 65%";
+  var pilaresDesc=d.cd.slice().sort(function(a,b){return b.p-a.p;}).map(function(p){
+    var mat=p.p>=75?"Excelencia":p.p>=50?"Em maturacao":p.p>=25?"A desenvolver":"Critico";
+    return p.n+": "+p.p+"% - "+mat;
+  }).join(" | ");
+  var oportDesc=d.top3.map(function(f){
+    var op=OPORT[f.idx];
+    return f.n+" ("+f.p+"%) >> "+(op?op.t+" - Solucao: "+op.s:"");
+  }).join(" || ");
+  var passosDesc="1. Proteja o que ja funciona | 2. Corrija primeiro: "+d.f1.n+" | 3. KPI semanal em "+d.f1.n+" | 4. Reavalie em 30 dias";
   if(typeof emailjs!=="undefined"){
     emailjs.send(EJS_SVC,EJS_TPL,{
       nome:lead.nome,empresa:lead.empresa,whatsapp:lead.wpp,email_lead:lead.email,
       porte:d.porte,setor:d.setor,momento:d.momento,
       score:d.score,nivel:d.nivel.n,
-      gargalo1:d.f1.n+" ("+d.f1.p+"%)",gargalo2:d.f2.n+" ("+d.f2.p+"%)",
+      gargalo1:d.f1.n+" ("+d.f1.p+"%)",
+      gargalo2:d.f2.n+" ("+d.f2.p+"%)",
       pontos_fortes:fortesStr,
-      proximos_passos:"1. Proteja o que ja funciona | 2. Corrija: "+d.f1.n+" | 3. KPI semanal em "+d.f1.n+" | 4. Reavalie em 30 dias | Oportunidades: "+oportStr+" | Pilares: "+pilaresStr
+      proximos_passos:passosDesc+" || OPORTUNIDADES: "+oportDesc+" || PILARES COMPLETOS: "+pilaresDesc
     }).then(function(){console.log("Email ok");}).catch(function(e){console.log("Erro:",e);});
   }
 }
