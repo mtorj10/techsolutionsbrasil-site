@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Diagnóstico Empresa Inteligente™</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <style>
   :root {
     --bg: #040e1c;
@@ -717,7 +718,7 @@ function showResult() {
   const sorted = [...pilaresComDados].sort((a, b) => a.pct - b.pct);
   const fraco1 = sorted[0];
   const fraco2 = sorted[1];
-  const fortes = [...pilaresComDados].sort((a, b) => b.pct - a.pct).slice(0, 3);
+  const fortes = [...pilaresComDados].filter(p => p.pct >= 65).sort((a, b) => b.pct - a.pct).slice(0, 3);
 
   // Proximos passos baseados nos pilares fracos
   const passos = [
@@ -740,7 +741,7 @@ function showResult() {
     pilarBars += '<div class="pilar-row">' +
       '<div class="pilar-row-name">' + p.icone + ' ' + p.nome + '</div>' +
       '<div class="pilar-bar-bg"><div class="pilar-bar-fill" style="background:' + barColor + '" data-w="' + p.pct + '"></div></div>' +
-      '<span class="pilar-row-badge ' + mat.cls + '">' + mat.label + '</span>' +
+      '<span class="pilar-row-badge ' + mat.cls + '">' + p.pct + '% - ' + mat.label + '</span>' +
       '</div>';
   });
 
@@ -802,7 +803,10 @@ function showResult() {
     '<div class="res-card">' +
       '<div class="res-card-label">Prioridade Estratégica</div>' +
       '<h3>Onde agir primeiro</h3>' +
-      '<div class="prio-main"><div class="prio-main-name">' + fraco1.nome + '</div><div class="prio-main-score">' + fraco1.pct + '% de maturidade</div></div>' +
+      (empatados.length > 1
+        ? '<div style="background:rgba(224,68,68,0.1);border:1px solid rgba(224,68,68,0.3);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:#ff7070;">⚠ ' + empatados.length + ' pilares criticos empatados no score mais baixo (' + piorScore + '%): ' + empatados.map(p => p.nome).join(', ') + '</div>'
+        : '<div class="prio-main"><div class="prio-main-name">' + fraco1.nome + '</div><div class="prio-main-score">' + fraco1.pct + '% de maturidade</div></div>'
+      ) +
       '<div class="prio-sub-label">Segundo Gargalo</div>' +
       '<div style="color:#8aaec8;font-size:14px;margin-bottom:14px;">' + fraco2.nome + ' - ' + fraco2.pct + '%</div>' +
       '<div class="prio-sub-label">Impacto Provável</div>' +
@@ -853,30 +857,25 @@ function showResult() {
 }
 
 function enviarEmail(score, nivel, fraco1, fraco2, fortes, porte, setor, momento) {
-  const assunto = encodeURIComponent('Novo Diagnóstico - ' + lead.nome + ' (' + lead.empresa + ') - Score ' + score + '/100');
-  const corpo = encodeURIComponent(
-    'NOVO LEAD - DIAGNÓSTICO EMPRESA INTELIGENTE\n\n' +
-    'DADOS DO LEAD\n' +
-    'Nome: ' + lead.nome + '\n' +
-    'Empresa: ' + lead.empresa + '\n' +
-    'WhatsApp: ' + lead.whatsapp + '\n' +
-    'E-mail: ' + lead.email + '\n' +
-    'Porte: ' + porte + '\n' +
-    'Setor: ' + setor + '\n' +
-    'Momento: ' + momento + '\n\n' +
-    'RESULTADO\n' +
-    'Score Geral: ' + score + '/100\n' +
-    'Nível: ' + nivel.nome + '\n\n' +
-    'Principal gargalo: ' + fraco1.nome + ' (' + fraco1.pct + '%)\n' +
-    'Segundo gargalo: ' + fraco2.nome + ' (' + fraco2.pct + '%)\n\n' +
-    'Pontos fortes: ' + fortes.map(f => f.nome + ' ' + f.pct + '%').join(', ')
-  );
-  const link = document.createElement('a');
-  link.href = 'mailto:' + EMAIL_DESTINO + '?subject=' + assunto + '&body=' + corpo;
-  link.style.display = 'none';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  emailjs.init('z5ugT39qA_cNFmifY');
+  const templateParams = {
+    nome: lead.nome,
+    empresa: lead.empresa,
+    whatsapp: lead.whatsapp,
+    email_lead: lead.email,
+    porte: porte,
+    setor: setor,
+    momento: momento,
+    score: score,
+    nivel: nivel.nome,
+    gargalo1: fraco1.nome + ' (' + fraco1.pct + '%)',
+    gargalo2: fraco2.nome + ' (' + fraco2.pct + '%)',
+    pontos_fortes: fortes.length > 0 ? fortes.map(f => f.nome + ' ' + f.pct + '%').join(', ') : 'Nenhum pilar acima de 65% - empresa em fase de estruturacao',
+    proximos_passos: '1. Proteja o que ja funciona | 2. Corrija primeiro: ' + fraco1.nome + ' | 3. Defina um KPI semanal ligado a ' + fraco1.nome + ' | 4. Reavalie em 30 dias'
+  };
+  emailjs.send('service_46sc0b8', 'template_pbnyp7n', templateParams)
+    .then(function() { console.log('Email enviado com sucesso'); })
+    .catch(function(error) { console.log('Erro ao enviar email:', error); });
 }
 
 function refazer() {
